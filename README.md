@@ -1,3 +1,3 @@
 # HackerRank Solutions
 
-My solutions to the problems found in HackerRank.com from various domains and sub-domains.
+Solutions to problems found in the popular coding website [HackerRank](www.hackerrank.com) from various domains and sub-domains.
