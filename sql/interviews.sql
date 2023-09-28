@@ -1,3 +1,5 @@
+-- Link: https://www.hackerrank.com/challenges/interviews/problem
+
 -- Tables: 
 --     - contests: contest_id, hacker_id, name
 --     - colleges: college_id, contest_id
