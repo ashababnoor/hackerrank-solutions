@@ -7,16 +7,15 @@ Link: https://www.hackerrank.com/challenges/hex-color-code/problem
 import re 
 
 n = int(input())
-all_lines = ""
+lines = []
 for _ in range(n): 
-    all_lines += input().rstrip() + "\n"
+    lines.append(input().rstrip())
 
-color_finder = r'color:\s+#([0-9a-fA-f]{3}|[0-9a-fA-F]{6})'
+property_finder = r'.*:.*;'
 hex_finder = r'#([0-9a-fA-f]{3}|[0-9a-fA-F]{6})'
 
-color_lines = re.findall(color_finder, all_lines)
-
-for color_line in color_lines:
-    color_codes = re.findall(hex_finder, color_line)
-    for color_code in color_codes: 
-        print(color_code)
+for line in lines:
+    if len(re.findall(property_finder, line)) > 0:
+        color_codes = re.findall(hex_finder, line)
+        for color_code in color_codes: 
+            print(color_code)
