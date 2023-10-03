@@ -9,3 +9,9 @@ b = int(input())
 c = int(input())
 d = int(input())
 print(a**b + c**d)
+
+#  One liner equivalent
+
+print(
+    int(input())**int(input()) + int(input())**int(input())
+)
