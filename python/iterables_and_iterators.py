@@ -1,6 +1,6 @@
 '''
 Iterables and Iterators
-Link: hackerrank.com/challenges/iterables-and-iterators/problem
+Link: https://www.hackerrank.com/challenges/iterables-and-iterators/problem
 '''
 
 # Enter your code here. Read input from STDIN. Print output to STDOUT
