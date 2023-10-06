@@ -4,7 +4,6 @@ Solutions to problems found in the popular coding website [HackerRank](www.hacke
 
 ```
 .
-├── README.md
 ├── algorithms
 │   ├── implementation
 │   └── strings
@@ -20,12 +19,8 @@ Solutions to problems found in the popular coding website [HackerRank](www.hacke
 │   ├── sets
 │   └── strings
 ├── sql
-│   ├── interviews.sql
-│   ├── weather_analysis.sql
-│   └── winners_chart.sql
 └── venv
     ├── bin
     ├── include
-    ├── lib
-    └── pyvenv.cfg
+    └── lib
 ```
