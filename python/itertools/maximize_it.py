@@ -16,7 +16,7 @@ k, m = map(int, input().rstrip().split())
 
 lists = []
 for _ in range(k):
-    inputs = map(int, input().rstrip().split())
+    ignore, *inputs = map(int, input().rstrip().split())
     lists.append(list(inputs))
 
 max_ = float("-inf")
