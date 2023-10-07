@@ -1,3 +1,8 @@
+'''
+Correlation and Regression Lines - A Quick Recap #1
+Link: https://www.hackerrank.com/challenges/correlation-and-regression-lines-6/problem 
+'''
+
 import numpy as np
 
 phy_scores = [15, 12, 8, 8, 7, 7, 7, 6, 5, 3]
