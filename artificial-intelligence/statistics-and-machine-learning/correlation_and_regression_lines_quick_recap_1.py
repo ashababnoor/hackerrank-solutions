@@ -32,3 +32,14 @@ divisor = np.sqrt(
 r = dividend / divisor
 
 print(f"Pearson Correlation Coefficient: {r:.3f}")
+
+
+# Alternate method
+# ----------------
+
+correlation_matrix = np.corrcoef(phy_arr, hist_arr)
+
+# The correlation coefficient is at position (0, 1) or (1, 0) in the correlation matrix
+correlation_coefficient = correlation_matrix[0, 1]
+
+print(f"Pearson Correlation Coefficient: {correlation_coefficient}")
