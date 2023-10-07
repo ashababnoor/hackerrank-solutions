@@ -32,3 +32,11 @@ divisor = np.sum(np.square(phy_arr - np.mean(phy_arr)))
 slope = dividend / divisor
 
 print(f"Slope: {slope:.3f}")
+
+
+# Alternate method
+# ----------------
+
+slope, intercept = np.polyfit(phy_arr, hist_arr, 1)
+
+print(f"Slope: {slope}")
