@@ -1,0 +1,32 @@
+Triangle Quest 1
+----------------
+
+1
+22
+333
+4444
+55555
+
+    1 = 1 x (1)
+   22 = 2 x (11)
+  333 = 3 x (111)
+ 4444 = 4 x (1111)
+55555 = 5 x (11111)
+
+1111... = 1 + 10 + 100 + 1000 + ...
+This is a geometric series
+
+S = a(1 - r^n) / (1 - r)
+​
+where,
+  S = sum of the first n terms of the series.
+  a = first term.
+  r = common ratio.
+  n = number of terms.
+
+for this problem,
+  a = 1
+  r = 10
+  n = n
+
+S = (10^n - 1) / 9
