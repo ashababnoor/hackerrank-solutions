@@ -3,7 +3,5 @@ Triangle Quest
 Link: https://www.hackerrank.com/challenges/python-quest-1/problem
 '''
 
-for i in range(1, int(input())):
-    # More than 2 lines will result in 0 score. Do not leave a blank line also
-    num = sum([i*10**j for j in range(i)])
-    print(num)
+for i in range(1, int(input())):  # More than 2 lines will result in 0 score. Do not leave a blank line also
+    print(int(((10**(i)-1) / 9) * i))
