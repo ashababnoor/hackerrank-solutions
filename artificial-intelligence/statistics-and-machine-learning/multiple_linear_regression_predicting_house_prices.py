@@ -26,3 +26,19 @@ regressor.fit(rows_x, rows_y)
 results = regressor.predict(rows_test)
 for result in results:
     print(result)
+    
+
+# Pure Numpy Solution
+import numpy as np
+
+F, H = map(int, input().split())
+x, y = np.empty((H, F + 1)), np.empty(H)
+
+for h in range(H):
+    fs = list(map(np.float32, input().split()))
+    x[h], y[h] = fs[:-1] + [1], fs[-1]
+
+w = np.linalg.inv(x.T @ x) @ x.T @ y
+    
+for t in range(int(input())):
+    print((np.array([[*map(np.float32, input().split()), 1]]) @ w)[0])
