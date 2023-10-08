@@ -22,7 +22,18 @@ class OddStream(object):
         return to_return
 
 def print_from_stream(n=1, stream=EvenStream()):
+    # using __init__() gives the wrong result here
     stream = stream.__class__()
+    for _ in range(n):
+        print(stream.get_next())
+
+
+# alternative method to avoid default argument mutation
+# read more: https://docs.python-guide.org/writing/gotchas/#mutable-default-arguments 
+
+def print_from_stream(n=1, stream=None):
+    if stream is None:
+        stream = EvenStream()
     for _ in range(n):
         print(stream.get_next())
 
