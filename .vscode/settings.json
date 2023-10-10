@@ -1,0 +1,8 @@
+{
+	"workbench.settings.editor": "json",
+	"python.defaultInterpreterPath": "${workspaceFolder}/venv/bin/python",
+    "python.interpreter.infoVisibility": "always",
+    "files.associations": {
+        "*.sql": "sql"
+    }
+}
