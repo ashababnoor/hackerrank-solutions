@@ -1,3 +1,6 @@
+-- Occupations
+-- Link: https://www.hackerrank.com/challenges/occupations/problem
+
 /*
 Enter your query here.
 */
