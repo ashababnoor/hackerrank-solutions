@@ -32,7 +32,7 @@ function get_last_commit_changes() {
     local last_commit_short_hash=$(git rev-parse --short $last_commit_hash)
 
     # Show modified files in the last commit
-    echo "Changes made in last commit: ${purple}$last_commit_short_hash${nc}"
+    echo "Changes made in last commit: ${purple_bold}$last_commit_short_hash${nc}"
     git diff --name-status $last_commit_hash^..$last_commit_hash | awk '
         BEGIN {
             color_A = "\033[1;32m";  # Green
@@ -51,19 +51,35 @@ function get_last_commit_changes() {
 }
 
 function git_add_commit_push() {
-    local commit_msg="$1"
+    local no_add=false
+    local commit_message
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --no-add)
+                no_add=true
+                shift
+                ;;
+            *)
+                commit_message="$1"
+                shift
+                ;;
+        esac
+    done
 
     # Check if a commit message is provided
-    if [ -z "$commit_msg" ]; then
-        echo "Error: Please provide a commit message."
+    if [[ -z $commit_message ]]; then
+        echo "${red_bold}Error:${nc} Please provide a commit message."
         return 1
     fi
 
-    # Add changes to staging area
-    git add .
+    # Add changes to staging area if --no-add flag is not given
+    if [[ ! $no_add = true ]]; then
+        git add .
+    fi
 
     # Commit changes with the provided message
-    git commit -m "$commit_msg"
+    git commit -m "$commit_message"
 
     # Push changes to the current branch
     branch=$(git rev-parse --abbrev-ref HEAD)
