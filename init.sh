@@ -23,12 +23,12 @@ function git_add_commit_push() {
     remote_url=$(git remote get-url origin)
 
     # Extract server and repo
-    server=$(echo $remote_url | awk -F: '{print $2}' | awk -F/ '{print $1}')
-    repo=$(echo $remote_url | awk -F: '{print $2}' | awk -F/ '{print $2}' | sed 's/.git$//')
+    server=$(echo $remote_url | awk -F: '{print $1}' | awk -F@ '{print $2}')
+    repo=$(echo $remote_url | awk -F: '{print $2}' | sed 's/.git$//')
 
-    echo "Successfully, pushed to remote server: $sever"
+    echo "Successfully, pushed to remote server: $server"
     echo "                        remote repo:   $repo"
     echo "                        remote branch: $branch"    
 }
 
-alias gitit=git_add_commit_push
+alias gitit=git_add_commit_push 
