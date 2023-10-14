@@ -18,5 +18,8 @@ function git_add_commit_push() {
     git push origin $branch
 
     # Print success message
+    echo ""
     echo "Successfully, pushed changes to branch $branch"
 }
+
+alias gitit=git_add_commit_push
