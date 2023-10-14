@@ -75,7 +75,12 @@ function git_add_commit_push() {
 
     # Add changes to staging area if --no-add flag is not given
     if [[ ! $no_add = true ]]; then
+        echo "${purple}git add .${nc} command is taking place"
         git add .
+    fi
+
+    if [[ $no_add = true ]]; then
+        echo "${purple}git add .${nc} command is omitted"
     fi
 
     # Commit changes with the provided message
