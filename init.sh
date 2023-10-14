@@ -19,7 +19,16 @@ function git_add_commit_push() {
 
     # Print success message
     echo ""
-    echo "Successfully, pushed changes to branch $branch"
+
+    remote_url=$(git remote get-url origin)
+
+    # Extract server and repo
+    server=$(echo $remote_url | awk -F: '{print $2}' | awk -F/ '{print $1}')
+    repo=$(echo $remote_url | awk -F: '{print $2}' | awk -F/ '{print $2}' | sed 's/.git$//')
+
+    echo "Successfully, pushed to remote server: $sever"
+    echo "                        remote repo:   $repo"
+    echo "                        remote branch: $branch"    
 }
 
 alias gitit=git_add_commit_push
