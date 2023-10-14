@@ -53,6 +53,7 @@ function get_last_commit_changes() {
 function git_add_commit_push() {
     local no_add=false
     local commit_message
+    local command_running_string="${blue_light}Command running:${nc}"
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
@@ -75,15 +76,17 @@ function git_add_commit_push() {
 
     # Add changes to staging area if --no-add flag is not given
     if [[ ! $no_add = true ]]; then
-        echo "${purple}git add .${nc} command is taking place"
+        echo "${command_running_string} git add ."
         git add .
     fi
 
     # Commit changes with the provided message
+    echo "${command_running_string} git commit -m $commit_message"
     git commit -m "$commit_message"
 
     # Push changes to the current branch
     branch=$(git rev-parse --abbrev-ref HEAD)
+    echo "${command_running_string} git push origin $branch"
     git push origin $branch
 
     # Print success message
