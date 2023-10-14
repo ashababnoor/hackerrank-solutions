@@ -1,1 +1,2 @@
 test file no. 01
+test file no. 02 has been deleted
