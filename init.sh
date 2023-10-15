@@ -2,9 +2,9 @@
 party_popper_emoji="\U0001F389"   # 🎉
 confetti_ball_emoji="\U0001F38A"  # 🎊
 
-# Define ANSI escape codes
-bold='\033[1m'
-reset='\033[0m'
+# Define bold text and reset color and formatting
+bold='\033[1m'  # bold text
+reset='\033[0m' # reset color and formatting
 
 # Define color codes (non-bold)
 blue='\033[0;34m'       # Blue
@@ -22,9 +22,6 @@ red_bold='\033[1;31m'        # Bold Red
 yellow_bold='\033[1;33m'     # Bold Yellow
 purple_bold='\033[1;35m'     # Bold Purple
 
-# Reset color and formatting
-nc='\033[0m' # No Color
-
 
 function get_last_commit_changes() {
     # Find the commit range of the last push
@@ -33,7 +30,7 @@ function get_last_commit_changes() {
     local last_commit_time=$(git log -n 1 --format="%cd")
 
     # Show modified files in the last commit
-    echo "Changes made in last commit: ${purple_bold}$last_commit_short_hash${nc} ($last_commit_time)"
+    echo "Changes made in last commit: ${purple_bold}$last_commit_short_hash${reset} ($last_commit_time)"
     git diff --name-status $last_commit_hash^..$last_commit_hash | awk '
         BEGIN {
             color_A = "\033[1;32m";  # Green
@@ -54,7 +51,7 @@ function get_last_commit_changes() {
 function git_add_commit_push() {
     local no_add=false
     local commit_message
-    local command_running_string="${light_blue}Command running:${nc}"
+    local command_running_string="${light_blue}Command running:${reset}"
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
@@ -71,7 +68,7 @@ function git_add_commit_push() {
 
     # Check if a commit message is provided
     if [[ -z $commit_message ]]; then
-        echo "${red_bold}Error:${nc} Please provide a commit message."
+        echo "${red_bold}Error:${reset} Please provide a commit message."
         return 1
     fi
 
@@ -99,10 +96,10 @@ function git_add_commit_push() {
     server=$(echo $remote_url | awk -F: '{print $1}' | awk -F@ '{print $2}')
     repo=$(echo $remote_url | awk -F: '{print $2}' | sed 's/.git$//')
 
-    echo "${green_bold}Hurray!${nc} ${party_popper_emoji}${confetti_ball_emoji}"
-    echo "Successfully, pushed to remote server: ${yellow}$server${nc}"
-    echo "                        remote repo:   ${yellow}$repo${nc}"
-    echo "                        remote branch: ${yellow}$branch${nc}"
+    echo "${green_bold}Hurray!${reset} ${party_popper_emoji}${confetti_ball_emoji}"
+    echo "Successfully, pushed to remote server: ${yellow}$server${reset}"
+    echo "                        remote repo:   ${yellow}$repo${reset}"
+    echo "                        remote branch: ${yellow}$branch${reset}"
 
     # Print last commit changes
     echo ""
