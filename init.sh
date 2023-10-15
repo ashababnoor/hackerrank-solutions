@@ -23,6 +23,33 @@ yellow_bold='\033[1;33m'     # Bold Yellow
 purple_bold='\033[1;35m'     # Bold Purple
 
 
+function get_git_remote_url(){
+    remote_url=$(git remote get-url origin)
+    echo $remote_url
+}
+
+function get_git_remote_server() {
+    remote_url=$(get_git_remote_url)
+
+    # Extract server
+    remote_server=$(echo $remote_url | awk -F: '{print $1}' | awk -F@ '{print $2}')
+    echo $remote_server
+    repo=$(echo $remote_url | awk -F: '{print $2}' | sed 's/.git$//')
+}
+
+function get_git_remote_repository(){
+    remote_url=$(get_git_remote_url)
+
+    # Extract repository
+    remote_repository=$(echo $remote_url | awk -F: '{print $2}' | sed 's/.git$//')
+    echo $remote_repository
+}
+
+function get_git_current_branch(){
+    current_branch=$(git rev-parse --abbrev-ref HEAD)
+    echo $current_branch
+}
+
 function get_last_commit_changes() {
     # Find the commit range of the last push
     local last_commit_hash=$(git log -n 1 --pretty=format:%H)
@@ -51,7 +78,7 @@ function get_last_commit_changes() {
 function git_add_commit_push() {
     local no_add=false
     local commit_message
-    local command_running_string="${light_blue}Command running:${reset}"
+    local command_running_message="${light_blue}Command running:${reset}"
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
@@ -74,27 +101,24 @@ function git_add_commit_push() {
 
     # Add changes to staging area if --no-add flag is not given
     if [[ ! $no_add = true ]]; then
-        echo "${command_running_string} git add ."
+        echo "${command_running_message} git add ."
         git add .
     fi
 
     # Commit changes with the provided message
-    echo "${command_running_string} git commit -m \"$commit_message\""
+    echo "${command_running_message} git commit -m \"$commit_message\""
     git commit -m "$commit_message"
 
     # Push changes to the current branch
-    branch=$(git rev-parse --abbrev-ref HEAD)
-    echo "${command_running_string} git push origin $branch"
+    branch=$(get_git_current_branch)
+    echo "${command_running_message} git push origin $branch"
     git push origin $branch
 
     # Print success message
     echo ""
 
-    remote_url=$(git remote get-url origin)
-
-    # Extract server and repo
-    server=$(echo $remote_url | awk -F: '{print $1}' | awk -F@ '{print $2}')
-    repo=$(echo $remote_url | awk -F: '{print $2}' | sed 's/.git$//')
+    server=$(get_git_remote_server)
+    repo=$(get_git_remote_repository)
 
     echo "${green_bold}Hurray!${reset} ${party_popper_emoji}${confetti_ball_emoji}"
     echo "Successfully, pushed to remote server: ${yellow}$server${reset}"
