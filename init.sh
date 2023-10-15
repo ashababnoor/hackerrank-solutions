@@ -34,7 +34,6 @@ function get_git_remote_server() {
     # Extract server
     remote_server=$(echo $remote_url | awk -F: '{print $1}' | awk -F@ '{print $2}')
     echo $remote_server
-    repo=$(echo $remote_url | awk -F: '{print $2}' | sed 's/.git$//')
 }
 
 function get_git_remote_repository(){
