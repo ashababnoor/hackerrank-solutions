@@ -1,2 +1,3 @@
 venv/
 foo*
+.DS_Store
