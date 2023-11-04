@@ -1,3 +1,8 @@
+'''
+Difference and Product
+Link: https://www.hackerrank.com/challenges/difference-and-product/problem
+'''
+
 #!/bin/python3
 
 import math
