@@ -55,142 +55,62 @@ dodger_blue_bold=$(echo -e '\033[1;38;5;33m')     # Bold Dodger Blue
 #   2) https://www.ditig.com/256-colors-cheat-sheet 
 
 
-function check_if_valid_git_repo(){
-    local dir="$PWD"
-    while [[ "$dir" != "/" ]]; do
-        if [ -d "$dir/.git" ]; then
-            echo "This is a Git repository."
-            return 0
+function log() {
+    echo -e "$(date +"%Y-%m-%d %H:%M:%S %z") ${blue}INFO${reset} $@"
+}
+
+function warn() {
+    echo -e "$(date +"%Y-%m-%d %H:%M:%S %z") ${yellow}WARNING${reset} $@"
+}
+
+function error() {
+    echo -e "$(date +"%Y-%m-%d %H:%M:%S %z") ${red}ERROR${reset} $@"
+    exit 1
+}
+
+function create_python_venv() {
+    if [ -d "$ROOT_PROJECT_DIR/venv" ]; then
+        log "Directory $ROOT_PROJECT_DIR/venv exists."
+    else
+        log "Creating virtual environment for os:$OSTYPE"
+        if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+            (python -m venv venv) || (python3 -m venv venv)
+        elif [[ "$OSTYPE" == "darwin"* ]]; then
+            python3 -m venv venv     # Mac OSX
+        elif [[ "$OSTYPE" == "cygwin" ]]; then
+            python -m venv venv      # POSIX compatibility layer and Linux environment emulation for Windows
+        elif [[ "$OSTYPE" == "msys" ]]; then
+            python -m venv venv      # Lightweight shell and GNU utilities compiled for Windows (part of MinGW)
+        elif [[ "$OSTYPE" == "freebsd"* ]]; then
+            python -m venv venv
+		else
+			log "Unknown os version, trying to install venv..."
+            (python3 -m venv venv) || (python -m venv venv)      # Unknown
         fi
-        dir="$(dirname "$dir")"
-    done
-    echo "This is not a Git repository."
-    return 1
-}
-
-function get_git_remote_url(){
-    remote_url=$(git remote get-url origin)
-    echo $remote_url
-}
-
-function get_git_remote_server() {
-    remote_url=$(get_git_remote_url)
-
-    # Extract server
-    remote_server=$(echo $remote_url | awk -F: '{print $1}' | awk -F@ '{print $2}')
-    echo $remote_server
-}
-
-function get_git_remote_repository(){
-    remote_url=$(get_git_remote_url)
-
-    # Extract repository
-    remote_repository=$(echo $remote_url | awk -F: '{print $2}' | sed 's/.git$//')
-    echo $remote_repository
-}
-
-function get_git_current_branch(){
-    current_branch=$(git rev-parse --abbrev-ref HEAD)
-    echo $current_branch
-}
-
-function print_last_commit_changes() {
-    local highlight_color=${1-$light_sea_green_bold}
-
-    # Find the commit range of the last push
-    local last_commit_hash=$(git log -n 1 --pretty=format:%H)
-    local last_commit_short_hash=$(git rev-parse --short $last_commit_hash)
-    local last_commit_time=$(git log -n 1 --format="%cd" --date=format:'%a %d %b %Y %H:%M:%S %z')
-
-    # Show modified files in the last commit
-    echo "Changes made in last commit: ${highlight_color}$last_commit_short_hash${reset} ($last_commit_time)"
-    git diff --name-status $last_commit_hash^..$last_commit_hash | awk '
-        BEGIN {
-            color_D = "\033[0;31m";  # Red
-            color_A = "\033[0;32m";  # Green
-            color_M = "\033[0;33m";  # Yellow
-            color_fbk = "\033[0;36m" # Cyan; Fallback color
-            reset = "\033[0m";       # Reset color
-        }
-        {
-                 if ($1 == "A") { print color_A $1 reset "    " $2 }
-            else if ($1 == "M") { print color_M $1 reset "    " $2 }
-            else if ($1 == "D") { print color_D $1 reset "    " $2 }
-            else { print color_fbk $1 reset "    " $2 }
-        }
-    '
-}
-
-function print_success_message(){
-    local server=$1
-    local repo=$2
-    local branch=$3
-    local highlight_color=${4:-$dark_orange}
-
-    echo "${green_bold}Hurray!${reset} ${party_popper_emoji}${confetti_ball_emoji}"
-    echo "Successfully, pushed to remote server: ${highlight_color}$server${reset}"
-    echo "                        remote repo:   ${highlight_color}$repo${reset}"
-    echo "                        remote branch: ${highlight_color}$branch${reset}"
-}
-
-function git_add_commit_push() {
-    local no_add=false
-    local commit_message
-    local command_running_message="${cyan}Command running:${reset}"
-
-    # Check if inside a git repo or not
-    git_repo_validity_message=$(check_if_valid_git_repo)
-
-    if [[ $git_repo_validity_message == "This is not a Git repository." ]]; then
-        echo "${red_bold}Fatal:${reset} not a git repository (or any of the parent directories)"
-        return 1
+        log "Virtual environment created"
     fi
 
-    while [[ $# -gt 0 ]]; do
-        case "$1" in
-            --no-add)
-                no_add=true
-                shift
-                ;;
-            *)
-                commit_message="$1"
-                shift
-                ;;
-        esac
-    done
-
-    # Check if a commit message is provided
-    if [[ -z $commit_message ]]; then
-        echo "${red_bold}Error:${reset} Please provide a commit message"
-        return 1
+    log "Activating virtual environment"
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        source venv/bin/activate
+    elif [[ "$OSTYPE" == "cygwin"* ]]; then
+        source venv/Scripts/activate
+    elif [[ "$OSTYPE" == "msys"* ]]; then
+        source venv/Scripts/activate
+    else
+        source venv/bin/activate
     fi
 
-    # Add changes to staging area if --no-add flag is not given
-    if [[ ! $no_add = true ]]; then
-        echo "${command_running_message} git add ."
-        git add .
+    # pip install --upgrade pip
+
+    log "Virtual environment activated successfully, Now installing requirements..."
+    if [[ -f "requirements.txt" ]]; then
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        log "Requirements installed successfully"
+    else
+        warn "No 'requirements.txt' file found, So, not installing any dependencies"
     fi
-
-    # Commit changes with the provided message
-    echo "${command_running_message} git commit -m \"$commit_message\""
-    git commit -m "$commit_message"
-
-    # Push changes to the current branch
-    branch=$(get_git_current_branch)
-    echo "${command_running_message} git push origin $branch"
-    git push origin $branch
-
-    # Print success message
-    echo ""
-
-    server=$(get_git_remote_server)
-    repo=$(get_git_remote_repository)
-
-    print_success_message $server $repo $branch
-
-    # Print last commit changes
-    echo ""
-    print_last_commit_changes
 }
 
-alias gitit=git_add_commit_push 
+create_python_venv 
