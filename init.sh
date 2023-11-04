@@ -113,4 +113,7 @@ function create_python_venv() {
     fi
 }
 
+shell_scripts_directory="shell-scripts"
+
+source $shell_scripts_directory/gitit.sh
 create_python_venv 
