@@ -14,22 +14,20 @@ Solutions to problems found in the popular coding website [HackerRank](www.hacke
 │   └── statistics-and-machine-learning
 ├── contests
 │   └── project-euler-plus
+├── mathematics
+│   └── fundamentals
 ├── python
 │   ├── built-ins
 │   ├── classes
 │   ├── collections
 │   ├── debugging
+│   ├── functionals
 │   ├── itertools
 │   ├── math
 │   ├── regex-parsing
 │   ├── sets
 │   └── strings
-├── sql
-│   ├── advanced-join
-│   └── advanced-select
-└── venv
-    ├── bin
-    ├── include
-    ├── lib
-    └── share
+└── sql
+    ├── advanced-join
+    └── advanced-select
 ```
